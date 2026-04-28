@@ -1,71 +1,54 @@
 package com.example.BusinessManagemnt.services;
 
-
-
-import java.util.List;
-import java.util.Optional;
+import com.example.BusinessManagemnt.entities.Product;
+import com.example.BusinessManagemnt.repositories.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.business.entities.Product;
-import com.business.repositories.ProductRepository;
-@Component
-public class ProductServices
-{
+import java.util.List;
+
+@Service
+public class ProductServices {
+
     @Autowired
     private ProductRepository productRepository;
 
-    //add Product
-    public void addProduct(Product p)
-    {
-        this.productRepository.save(p);
+    // Add Product
+    public void addProduct(Product p) {
+        productRepository.save(p);
     }
 
-
-    //getAll products
-    public List<Product> getAllProducts()
-    {
-        List<Product> products=(List<Product>)this.productRepository.findAll();
-        return products;
+    // Get all products
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();  // ✅ no casting
     }
 
-    //get Single Product
-    public Product getProduct(int id)
-    {
-        Optional<Product> optional = this.productRepository.findById(id);
-        Product product=optional.get();
-        return product;
+    // Get single product
+    public Product getProduct(int id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
-    //update Product
-    public void updateproduct(Product p,int id)
-    {
-        p.setPid(id);
-        Optional<Product> optional = this.productRepository.findById(id);
-        Product prod=optional.get();
+    // Update product
+    public void updateProduct(Product p, int id) {
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        if(prod.getPid()==id)
-        {
-            this.productRepository.save(p);
-        }
-    }
-    //delete product
-    public void deleteProduct(int id)
-    {
-        this.productRepository.deleteById(id);
+        existing.setPname(p.getPname());
+        existing.setPprice(p.getPprice());
+        existing.setPdescription(p.getPdescription());
+
+        productRepository.save(existing);
     }
 
-    //Get Product By Name
-    public Product getProductByName(String name)
-    {
+    // Delete product
+    public void deleteProduct(int id) {
+        productRepository.deleteById(id);
+    }
 
-        Product product= this.productRepository.findByPname(name);
-        if(product!=null)
-        {
-            return product;
-        }
-        return null;
-
+    // Get product by name
+    public Product getProductByName(String name) {
+        return productRepository.findByPname(name);
     }
 }

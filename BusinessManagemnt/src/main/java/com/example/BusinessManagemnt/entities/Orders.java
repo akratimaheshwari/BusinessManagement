@@ -1,39 +1,29 @@
 package com.example.BusinessManagemnt.entities;
+
+import jakarta.persistence.*;
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-
 @Entity
-public class Orders
-{
+public class Orders {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int oId;
+
     private String oName;
     private double oPrice;
     private int oQuantity;
+
     private Date orderDate;
-    private double totalAmmout;
+
+    private double totalAmount;
 
     @ManyToOne
-    @JoinColumn(name="user_u_id")
+    @JoinColumn(name = "user_u_id")
     private User user;
 
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
-
+    // Default Constructor (IMPORTANT)
+    public Orders() {}
 
     public int getoId() {
         return oId;
@@ -67,6 +57,22 @@ public class Orders
         this.oQuantity = oQuantity;
     }
 
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     public User getUser() {
         return user;
     }
@@ -75,20 +81,14 @@ public class Orders
         this.user = user;
     }
 
-
-    public double getTotalAmmout() {
-        return totalAmmout;
-    }
-
-    public void setTotalAmmout(double totalAmmout) {
-        this.totalAmmout = totalAmmout;
-    }
-
     @Override
     public String toString() {
-        return "Orders [oId=" + oId + ", oName=" + oName + ", oPrice=" + oPrice + ", oQuantity=" + oQuantity
-                + ", orderDate=" + orderDate + ", totalAmmout=" + totalAmmout + ", user=" + user + "]";
+        return "Orders [oId=" + oId +
+                ", oName=" + oName +
+                ", oPrice=" + oPrice +
+                ", oQuantity=" + oQuantity +
+                ", orderDate=" + orderDate +
+                ", totalAmount=" + totalAmount +
+                ", user=" + user + "]";
     }
-
-
 }

@@ -1,61 +1,55 @@
 package com.example.BusinessManagemnt.services;
 
+import com.example.BusinessManagemnt.entities.Admin;
+import com.example.BusinessManagemnt.repositories.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class AdminServices {
+
     @Autowired
     private AdminRepository adminRepository;
 
-    //Get All Admins
-    public List<Admin> getAll()
-    {
-        List<Admin> admins = (List<Admin>)this.adminRepository.findAll();
-        return admins;
-    }
-    //Get Single Admin
-    public Admin getAdmin(int id)
-    {
-        Optional<Admin> optional = this.adminRepository.findById(id);
-        Admin admin=optional.get();
-        return admin;
-    }
-    //Update Admin
-    public void update(Admin admin ,int id)
-    {
-        for (Admin ad : getAll())
-        {
-            if(ad.getAdminId()==id)
-            {
-                this.adminRepository.save(admin);
-            }
-        }
+    // Get All Admins
+    public List<Admin> getAll() {
+        return adminRepository.findAll();  // ✅ simplified
     }
 
-    //delete User
-    public void delete(int id)
-    {
-        this.adminRepository.deleteById(id);
+    // Get Single Admin
+    public Admin getAdmin(int id) {
+        return adminRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
     }
 
-    //add Admin
-    public void addAdmin(Admin admin)
-    {
-        this.adminRepository.save(admin);
+    // Update Admin
+    public void update(Admin admin, int id) {
+        Admin existing = adminRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
+
+        existing.setAdminName(admin.getAdminName());
+        existing.setAdminEmail(admin.getAdminEmail());
+        existing.setAdminPassword(admin.getAdminPassword());
+        existing.setAdminNumber(admin.getAdminNumber());
+
+        adminRepository.save(existing);
     }
 
-    //Validating Admin login
-    public boolean validateAdminCredentials(String email,String password)
-    {
-        Admin admin=adminRepository.findByAdminEmail(email);
-        if(admin!=null && admin.getAdminPassword().equals(password))
-        {
-            return true;
-        }
-        return false;
+    // Delete Admin
+    public void delete(int id) {
+        adminRepository.deleteById(id);
+    }
+
+    // Add Admin
+    public void addAdmin(Admin admin) {
+        adminRepository.save(admin);
+    }
+
+    // Validate Admin Login
+    public boolean validateAdminCredentials(String email, String password) {
+        Admin admin = adminRepository.findByAdminEmail(email);
+        return admin != null && admin.getAdminPassword().equals(password);
     }
 }
-
-

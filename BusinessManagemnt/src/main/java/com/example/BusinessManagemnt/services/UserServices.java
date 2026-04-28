@@ -1,74 +1,61 @@
 package com.example.BusinessManagemnt.services;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.BusinessManagemnt.entities.User;
+import com.example.BusinessManagemnt.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.business.entities.Admin;
-import com.business.entities.User;
-import com.business.repositories.UserRepository;
-@Component
-public class UserServices
-{
+import java.util.List;
+
+@Service
+public class UserServices {
+
     @Autowired
     private UserRepository userRepository;
 
-    //Get All Users
-    public List<User> getAllUser()
-    {
-        List<User> users = (List<User>) this.userRepository.findAll();
-        return users;
+    // Get All Users
+    public List<User> getAllUser() {
+        return userRepository.findAll();  // ✅ no casting
     }
 
-    //Get Single User
-    public User getUser(int id)
-    {
-        Optional<User> optional = this.userRepository.findById(id);
-        User user = optional.get();
-        return user;
+    // Get Single User
+    public User getUser(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    //Get Single User By Email
-    public User getUserByEmail(String email)
-    {
-        User user=	this.userRepository.findUserByUemail(email);
-        return user;
+    // Get User By Email
+    public User getUserByEmail(String email) {
+        return userRepository.findByUemail(email);  // ✅ method name fix
     }
 
-    //Update
-    public void updateUser(User user,int id)
-    {
-        user.setU_id(id);
-        this.userRepository.save(user);
+    // Update User
+    public void updateUser(User user, int id) {
+        User existing = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existing.setUname(user.getUname());
+        existing.setUemail(user.getUemail());
+        existing.setUpassword(user.getUpassword());
+        existing.setUnumber(user.getUnumber());
+
+        userRepository.save(existing);
     }
 
-    //delete single User
-    public void deleteUser(int id)
-    {
-        this.userRepository.deleteById(id);
+    // Delete User
+    public void deleteUser(int id) {
+        userRepository.deleteById(id);
     }
 
-    //Add User
-    public void addUser(User user)
-    {
-        this.userRepository.save(user);
+    // Add User
+    public void addUser(User user) {
+        userRepository.save(user);
     }
 
-    public boolean validateLoginCredentials(String email,String password)
-    {
-        List<User> users = (List<User>) this.userRepository.findAll();
-        for(User u:users)
-        {
-            if(u!=null && u.getUpassword().equals(password) && u.getUemail().equals(email))
-            {
-                return true;
-            }
-        }
-        return false;
+    // Validate Login (Optimized)
+    public boolean validateLoginCredentials(String email, String password) {
+        User user = userRepository.findByUemail(email);
+        return user != null && user.getUpassword().equals(password);
     }
-
-
-
 }

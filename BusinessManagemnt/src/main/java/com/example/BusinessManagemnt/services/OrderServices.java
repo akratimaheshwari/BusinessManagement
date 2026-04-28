@@ -1,65 +1,52 @@
 package com.example.BusinessManagemnt.services;
 
-
-import java.util.List;
-import java.util.Optional;
+import com.example.BusinessManagemnt.entities.Orders;
+import com.example.BusinessManagemnt.entities.User;
+import com.example.BusinessManagemnt.repositories.OrderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import com.business.entities.Admin;
-import com.business.repositories.AdminRepository;
+import org.springframework.stereotype.Service;
 
-@Component
-public class AdminServices
-{
+import java.util.List;
+
+@Service
+public class OrderServices {
+
     @Autowired
-    private AdminRepository adminRepository;
+    private OrderRepository orderRepository;
 
-    //Get All Admins
-    public List<Admin>getAll()
-    {
-        List<Admin> admins = (List<Admin>)this.adminRepository.findAll();
-        return admins;
-    }
-    //Get Single Admin
-    public Admin getAdmin(int id)
-    {
-        Optional<Admin> optional = this.adminRepository.findById(id);
-        Admin admin=optional.get();
-        return admin;
-    }
-    //Update Admin
-    public void update(Admin admin ,int id)
-    {
-        for (Admin ad : getAll())
-        {
-            if(ad.getAdminId()==id)
-            {
-                this.adminRepository.save(admin);
-            }
-        }
+    // Get all orders
+    public List<Orders> getOrders() {
+        return orderRepository.findAll();
     }
 
-    //delete User
-    public void delete(int id)
-    {
-        this.adminRepository.deleteById(id);
+    // Save order
+    public void saveOrder(Orders order) {
+        orderRepository.save(order);
     }
 
-    //add Admin
-    public void addAdmin(Admin admin)
-    {
-        this.adminRepository.save(admin);
+    // Update order
+    public void updateOrder(int id, Orders order) {
+        Orders existing = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        existing.setoName(order.getoName());
+        existing.setoPrice(order.getoPrice());
+        existing.setoQuantity(order.getoQuantity());
+        existing.setOrderDate(order.getOrderDate());
+        existing.setTotalAmount(order.getTotalAmount());
+        existing.setUser(order.getUser());
+
+        orderRepository.save(existing);
     }
 
-    //Validating Admin login
-    public boolean validateAdminCredentials(String email,String password)
-    {
-        Admin admin=adminRepository.findByAdminEmail(email);
-        if(admin!=null && admin.getAdminPassword().equals(password))
-        {
-            return true;
-        }
-        return false;
+    // Delete order
+    public void deleteOrder(int id) {
+        orderRepository.deleteById(id);
+    }
+
+    // Get orders for a user
+    public List<Orders> getOrdersForUser(User user) {
+        return orderRepository.findByUser(user);
     }
 }

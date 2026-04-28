@@ -1,26 +1,31 @@
 package com.example.BusinessManagemnt.loginCredentials;
 
-public class AdminLogin
-{
+public class AdminLogin {
 
     private String email;
-
     private String password;
+
+    // Default constructor
+    public AdminLogin() {}
 
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     @Override
     public String toString() {
-        return "AdminLogin [name=" + email + ", password=" + password + "]";
+        return "AdminLogin [email=" + email + ", password=" + password + "]";
     }
 }

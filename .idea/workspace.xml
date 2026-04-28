@@ -18,11 +18,11 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-<<<<<<< HEAD
+
         <option value="Class" />
-=======
+
         <option value="HTML File" />
->>>>>>> 71b656c0b825a79c99d57078df1244368ab19c15
+
       </list>
     </option>
   </component>
@@ -51,31 +51,8 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-<<<<<<< HEAD
-=======
-    "DefaultHtmlFileTemplate": "HTML File",
->>>>>>> 71b656c0b825a79c99d57078df1244368ab19c15
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-<<<<<<< HEAD
-    "Spring Boot.BusinessManagemntApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "Project",
-=======
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "SDKs",
->>>>>>> 71b656c0b825a79c99d57078df1244368ab19c15
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
